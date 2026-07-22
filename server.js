@@ -22,7 +22,14 @@ app.get("/api/health", (req, res) => {
     environment: process.env.NODE_ENV
   });
 });
+app.post("/api/birth-chart", (req, res) => {
+  const birthDetails = req.body;
 
+  res.json({
+    success: true,
+    received: birthDetails
+  });
+});
 app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
 });
