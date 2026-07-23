@@ -43,10 +43,24 @@ const horoscope = new Horoscope({
   zodiac: "tropical"
 });
 
-    res.json({
-      success: true,
-      chart: horoscope
-    });
+
+  const chart = {
+  origin: horoscope.origin,
+  sunSign: horoscope._sunSign,
+  ascendant: horoscope._ascendant,
+  midheaven: horoscope._midheaven,
+  houses: horoscope._houses,
+  planets: horoscope._celestialBodies,
+  points: horoscope._celestialPoints,
+  aspects: horoscope._aspects,
+  houseSystem: horoscope._houseSystem,
+  zodiac: horoscope._zodiac
+};
+
+res.json({
+  success: true,
+  chart
+});
 
   } catch (error) {
     res.status(500).json({
