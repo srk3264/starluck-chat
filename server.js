@@ -1,3 +1,4 @@
+const { Origin, Horoscope } = require("circular-natal-horoscope-js");
 require("dotenv").config();
 
 const express = require("express");
@@ -23,12 +24,36 @@ app.get("/api/health", (req, res) => {
   });
 });
 app.post("/api/birth-chart", (req, res) => {
-  const birthDetails = req.body;
+  try {
+    const { year, month, day, hour, minute, latitude, longitude } = req.body;
 
-  res.json({
-    success: true,
-    received: birthDetails
-  });
+    const origin = new Origin({
+  year,
+  month: month - 1,
+  date: day,
+  hour,
+  minute,
+  latitude,
+  longitude
+});
+
+const horoscope = new Horoscope({
+  origin,
+  houseSystem: "placidus",
+  zodiac: "tropical"
+});
+
+    res.json({
+      success: true,
+      chart: horoscope
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
 });
 app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);

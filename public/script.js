@@ -3,13 +3,25 @@ const form = document.getElementById("birthForm");
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
 
-  const birthDetails = {
-    name: document.getElementById("name").value.trim(),
-    birthDate: document.getElementById("birthDate").value,
-    birthTime: document.getElementById("birthTime").value,
-    birthCity: document.getElementById("birthCity").value.trim(),
-    birthCountry: document.getElementById("birthCountry").value.trim()
-  };
+  const date = document.getElementById("birthDate").value.split("-");
+const time = document.getElementById("birthTime").value.split(":");
+
+const birthDetails = {
+  name: document.getElementById("name").value.trim(),
+
+  year: Number(date[0]),
+  month: Number(date[1]),
+  day: Number(date[2]),
+
+  hour: Number(time[0]),
+  minute: Number(time[1]),
+
+  birthCity: document.getElementById("birthCity").value.trim(),
+  birthCountry: document.getElementById("birthCountry").value.trim(),
+
+  latitude: Number(document.getElementById("latitude").value),
+  longitude: Number(document.getElementById("longitude").value)
+};
 
   try {
     const response = await fetch("/api/birth-chart", {
