@@ -43,29 +43,7 @@ app.post("/api/birth-chart", (req, res) => {
   longitude
 });
 
-app.post("/api/auth/magic-link", async (req, res) => {
-  try {
-    const { email } = req.body;
 
-    const { error } = await supabase.auth.signInWithOtp({
-      email,
-      options: {
-        emailRedirectTo: process.env.SUPABASE_REDIRECT_URL
-      }
-    });
-
-    if (error) {
-      return res.status(400).json({ success: false, error: error.message });
-    }
-
-    res.json({
-      success: true,
-      message: "Magic link sent"
-    });
-  } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
-  }
-});
 
 const horoscope = new Horoscope({
   origin,
@@ -97,6 +75,29 @@ res.json({
       success: false,
       error: error.message
     });
+  }
+});
+app.post("/api/auth/magic-link", async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    const { error } = await supabase.auth.signInWithOtp({
+      email,
+      options: {
+        emailRedirectTo: process.env.SUPABASE_REDIRECT_URL
+      }
+    });
+
+    if (error) {
+      return res.status(400).json({ success: false, error: error.message });
+    }
+
+    res.json({
+      success: true,
+      message: "Magic link sent"
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
   }
 });
 app.listen(PORT, () => {
