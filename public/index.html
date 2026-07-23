@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Starluck</title>
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
@@ -19,6 +20,11 @@
   </form>
   <p id="magicLinkStatus"></p>
 </section>
+
+  <section id="userSection" hidden>
+    <p id="userEmail"></p>
+    <button id="signOutButton" type="button">Sign out</button>
+  </section>
 
   <form id="birthForm">
 

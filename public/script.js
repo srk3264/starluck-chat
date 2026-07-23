@@ -1,5 +1,38 @@
+const supabase = window.supabase.createClient(
+  "https://bfakvvowvndyevlggart.supabase.co",
+  "sb_publishable_-5LKUQoUyEpUttyUoI3hyA_5tyaj0X7"
+);
+
 const magicLinkForm = document.getElementById("magicLinkForm");
 const magicLinkStatus = document.getElementById("magicLinkStatus");
+const authSection = document.getElementById("authSection");
+const userSection = document.getElementById("userSection");
+const userEmail = document.getElementById("userEmail");
+const signOutButton = document.getElementById("signOutButton");
+
+async function updateAuthUI() {
+  const { data } = await supabase.auth.getSession();
+  const session = data.session;
+
+  if (session?.user) {
+    authSection.hidden = true;
+    userSection.hidden = false;
+    userEmail.textContent = `Signed in as ${session.user.email}`;
+  } else {
+    authSection.hidden = false;
+    userSection.hidden = true;
+    userEmail.textContent = "";
+  }
+}
+
+supabase.auth.onAuthStateChange(() => {
+  updateAuthUI();
+});
+
+signOutButton.addEventListener("click", async () => {
+  await supabase.auth.signOut();
+  magicLinkStatus.textContent = "Signed out.";
+});
 
 magicLinkForm.addEventListener("submit", async (event) => {
   event.preventDefault();
@@ -28,6 +61,8 @@ magicLinkForm.addEventListener("submit", async (event) => {
     console.error(error);
   }
 });
+
+updateAuthUI();
 
 const form = document.getElementById("birthForm");
 
