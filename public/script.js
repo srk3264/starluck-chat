@@ -68,19 +68,21 @@ updateAuthUI();
 
 const form = document.getElementById("birthForm");
 form.hidden=true;
+const birthPlace = document.getElementById("birthPlace");
+const placeSuggestions = document.getElementById("placeSuggestions");
+
+let debounce;
+
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
 
   const date = document.getElementById("birthDate").value.split("-");
 const time = document.getElementById("birthTime").value.split(":");
-const birthPlace = document.getElementById("birthPlace");
-const placeSuggestions = document.getElementById("placeSuggestions");
 
-let debounce;
 
 birthPlace.addEventListener("input", () => {
-  console.log("Typing:", birthPlace.value);
+  
   clearTimeout(debounce);
 
   debounce = setTimeout(async () => {
@@ -159,4 +161,3 @@ const birthDetails = {
     console.error(error);
   }
 });
-console.log("Reached end of script");
