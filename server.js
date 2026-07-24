@@ -31,30 +31,9 @@ app.get("/api/health", (req, res) => {
 });
 app.post("/api/birth-chart", async(req, res) => {
   try {
-    const {
-  year,
-  month,
-  day,
-  hour,
-  minute,
-  birthCity,
-  birthCountry
-} = req.body;
+   
 
-const geoResponse = await fetch(
-  `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(
-    `${birthCity}, ${birthCountry}`
-  )}&count=1`
-);
-
-const geoData = await geoResponse.json();
-
-if (!geoData.results?.length) {
-  throw new Error("City not found");
-}
-
-const latitude = geoData.results[0].latitude;
-const longitude = geoData.results[0].longitude;
+const { year, month, day, hour, minute, latitude, longitude } = req.body;
 
     const origin = new Origin({
   year,
