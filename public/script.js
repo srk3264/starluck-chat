@@ -14,15 +14,17 @@ async function updateAuthUI() {
   const { data } = await supabaseClient.auth.getSession();
   const session = data.session;
 
-  if (session?.user) {
-    authSection.hidden = true;
-    userSection.hidden = false;
-    userEmail.textContent = `Signed in as ${session.user.email}`;
-  } else {
-    authSection.hidden = false;
-    userSection.hidden = true;
-    userEmail.textContent = "";
-  }
+if (session?.user) {
+  authSection.hidden = true;
+  userSection.hidden = false;
+  form.hidden = false;
+  userEmail.textContent = `Signed in as ${session.user.email}`;
+} else {
+  authSection.hidden = false;
+  userSection.hidden = true;
+  form.hidden = true;
+  userEmail.textContent = "";
+} 
 }
 
 supabaseClient.auth.onAuthStateChange(() => {
@@ -65,6 +67,7 @@ magicLinkForm.addEventListener("submit", async (event) => {
 updateAuthUI();
 
 const form = document.getElementById("birthForm");
+form.hidden=true;
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
