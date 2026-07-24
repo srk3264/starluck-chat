@@ -1,4 +1,4 @@
-const supabase = window.supabase.createClient(
+const supabaseClient = window.supabase.createClient(
   "https://bfakvvowvndyevlggart.supabase.co",
   "sb_publishable_-5LKUQoUyEpUttyUoI3hyA_5tyaj0X7"
 );
@@ -11,7 +11,7 @@ const userEmail = document.getElementById("userEmail");
 const signOutButton = document.getElementById("signOutButton");
 
 async function updateAuthUI() {
-  const { data } = await supabase.auth.getSession();
+  const { data } = await supabaseClient.auth.getSession();
   const session = data.session;
 
   if (session?.user) {
@@ -25,12 +25,12 @@ async function updateAuthUI() {
   }
 }
 
-supabase.auth.onAuthStateChange(() => {
+supabaseClient.auth.onAuthStateChange(() => {
   updateAuthUI();
 });
 
 signOutButton.addEventListener("click", async () => {
-  await supabase.auth.signOut();
+  await supabaseClient.auth.signOut();
   magicLinkStatus.textContent = "Signed out.";
 });
 
