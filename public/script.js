@@ -74,6 +74,55 @@ form.addEventListener("submit", async (event) => {
 
   const date = document.getElementById("birthDate").value.split("-");
 const time = document.getElementById("birthTime").value.split(":");
+const birthPlace = document.getElementById("birthPlace");
+const placeSuggestions = document.getElementById("placeSuggestions");
+
+let debounce;
+
+birthPlace.addEventListener("input", () => {
+  clearTimeout(debounce);
+
+  debounce = setTimeout(async () => {
+    const query = birthPlace.value.trim();
+
+    if (query.length < 2) {
+      placeSuggestions.innerHTML = "";
+      return;
+    }
+
+    const response = await fetch(
+      `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(query)}&count=5`
+    );
+
+    const data = await response.json();
+
+    placeSuggestions.innerHTML = "";
+
+    (data.results || []).forEach(place => {
+      const option = document.createElement("div");
+
+      option.textContent =
+        `${place.name}, ${place.admin1 || ""}, ${place.country}`;
+
+      option.addEventListener("click", () => {
+
+        birthPlace.value =
+          `${place.name}, ${place.country}`;
+
+        document.getElementById("latitude").value =
+          place.latitude;
+
+        document.getElementById("longitude").value =
+          place.longitude;
+
+        placeSuggestions.innerHTML = "";
+      });
+
+      placeSuggestions.appendChild(option);
+    });
+
+  }, 300);
+});
 
 const birthDetails = {
   name: document.getElementById("name").value.trim(),
@@ -85,11 +134,12 @@ const birthDetails = {
   hour: Number(time[0]),
   minute: Number(time[1]),
 
-  birthCity: document.getElementById("birthCity").value.trim(),
-  birthCountry: document.getElementById("birthCountry").value.trim(),
+  birthPlace: birthPlace.value,
 
   latitude: Number(document.getElementById("latitude").value),
   longitude: Number(document.getElementById("longitude").value)
+
+  
 };
 
   try {
