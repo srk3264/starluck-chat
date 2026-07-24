@@ -29,7 +29,7 @@ app.get("/api/health", (req, res) => {
     environment: process.env.NODE_ENV
   });
 });
-app.post("/api/birth-chart", (req, res) => {
+app.post("/api/birth-chart", async(req, res) => {
   try {
     const {
   year,
