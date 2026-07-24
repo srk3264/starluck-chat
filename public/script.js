@@ -159,3 +159,4 @@ const birthDetails = {
     console.error(error);
   }
 });
+console.log("Reached end of script");
