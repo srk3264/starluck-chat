@@ -80,6 +80,7 @@ const placeSuggestions = document.getElementById("placeSuggestions");
 let debounce;
 
 birthPlace.addEventListener("input", () => {
+  console.log("Typing:", birthPlace.value);
   clearTimeout(debounce);
 
   debounce = setTimeout(async () => {
