@@ -73,14 +73,6 @@ const placeSuggestions = document.getElementById("placeSuggestions");
 
 let debounce;
 
-
-form.addEventListener("submit", async (event) => {
-  event.preventDefault();
-
-  const date = document.getElementById("birthDate").value.split("-");
-const time = document.getElementById("birthTime").value.split(":");
-
-
 birthPlace.addEventListener("input", () => {
   
   clearTimeout(debounce);
@@ -126,6 +118,16 @@ birthPlace.addEventListener("input", () => {
 
   }, 300);
 });
+
+
+form.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  const date = document.getElementById("birthDate").value.split("-");
+const time = document.getElementById("birthTime").value.split(":");
+
+
+
 
 const birthDetails = {
   name: document.getElementById("name").value.trim(),
