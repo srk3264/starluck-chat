@@ -2,10 +2,7 @@ const { Origin, Horoscope } = require("circular-natal-horoscope-js");
 require("dotenv").config();
 const { createClient } = require("@supabase/supabase-js");
 
-const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_ANON_KEY
-);
+
 
 const express = require("express");
 const path = require("path");
@@ -32,6 +29,17 @@ app.get("/api/health", (req, res) => {
 app.post("/api/birth-chart", async(req, res) => {
   try {
    
+    const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_ANON_KEY,
+  {
+    global: {
+      headers: {
+        Authorization: req.headers.authorization
+      }
+    }
+  }
+);
 
     const token = req.headers.authorization?.replace("Bearer ", "");
 
