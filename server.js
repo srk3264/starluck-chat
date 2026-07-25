@@ -105,7 +105,7 @@ const { data, error } = await supabase
     natal_chart: chart
   });
 
-console.log("Supabase save result:", data, error);
+
 
 res.json({
   success: true,
