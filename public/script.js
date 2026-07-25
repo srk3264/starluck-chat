@@ -148,13 +148,18 @@ const birthDetails = {
 };
 
   try {
-    const response = await fetch("/api/birth-chart", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(birthDetails)
-    });
+    const {
+  data: { session }
+} = await supabaseClient.auth.getSession();
+
+const response = await fetch("/api/birth-chart", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    "Authorization": `Bearer ${session.access_token}`
+  },
+  body: JSON.stringify(birthDetails)
+});
 
     const data = await response.json();
 

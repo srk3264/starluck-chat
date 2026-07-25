@@ -33,6 +33,20 @@ app.post("/api/birth-chart", async(req, res) => {
   try {
    
 
+    const token = req.headers.authorization?.replace("Bearer ", "");
+
+const {
+  data: { user },
+  error: authError
+} = await supabase.auth.getUser(token);
+
+if (authError || !user) {
+  return res.status(401).json({
+    success: false,
+    error: "Unauthorized"
+  });
+}
+
 const { year, month, day, hour, minute, latitude, longitude } = req.body;
 
     const origin = new Origin({
@@ -66,6 +80,22 @@ const horoscope = new Horoscope({
   houseSystem: horoscope._houseSystem,
   zodiac: horoscope._zodiac
 };
+
+await supabase
+  .from("profiles")
+  .upsert({
+    id: user.id,
+    name: req.body.name,
+    birth_place: req.body.birthPlace,
+    year,
+    month,
+    day,
+    hour,
+    minute,
+    latitude,
+    longitude,
+    natal_chart: chart
+  });
 
 res.json({
   success: true,
