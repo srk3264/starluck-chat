@@ -96,7 +96,7 @@ await supabase
     longitude,
     natal_chart: chart
   });
-
+console.log("Supabase save result:", data, error);
 res.json({
   success: true,
   chart
