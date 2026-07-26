@@ -18,7 +18,7 @@ async function loadNatalChart(session) {
   });
 
   const result = await response.json();
-  
+
   const transitResponse = await fetch("/api/transits");
   const transitResult = await transitResponse.json();
 
@@ -82,7 +82,7 @@ magicLinkForm.addEventListener("submit", async (event) => {
   }
 });
 
-updateAuthUI();
+
 
 const form = document.getElementById("birthForm");
 form.hidden=true;
@@ -180,7 +180,7 @@ const response = await fetch("/api/birth-chart", {
 });
 
     const data = await response.json();
-    await loadNatalChart(session);
+    
     
   } catch (error) {
     console.error(error);
