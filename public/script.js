@@ -19,6 +19,16 @@ if (session?.user) {
   userSection.hidden = false;
   form.hidden = false;
   userEmail.textContent = `Signed in as ${session.user.email}`;
+
+  const response = await fetch("/api/natal-chart", {
+  headers: {
+    Authorization: `Bearer ${session.access_token}`
+  }
+});
+
+const result = await response.json();
+
+console.log(result);
   
 } else {
   authSection.hidden = false;
