@@ -21,6 +21,17 @@ async function loadNatalChart(session) {
 
   const transitResponse = await fetch("/api/transits");
   const transitResult = await transitResponse.json();
+  const aspectsResponse = await fetch("/api/aspects", {
+    headers: {
+      Authorization: `Bearer ${session.access_token}`
+    }
+  });
+
+  const aspectsResult = await aspectsResponse.json();
+
+  console.log("Natal:", result);
+  console.log("Transits:", transitResult);
+  console.log("Aspects:", aspectsResult);
 
   
 }
