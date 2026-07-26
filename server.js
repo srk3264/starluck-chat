@@ -2,6 +2,7 @@ const { Origin, Horoscope } = require("circular-natal-horoscope-js");
 require("dotenv").config();
 const { createClient } = require("@supabase/supabase-js");
 const { extractNatalPositions } = require("./lib/natalPositions");
+const { extractTransitPositions } = require("./lib/transitPositions");
 
 
 const express = require("express");
@@ -168,6 +169,22 @@ res.json({
   natalPositions
 });
 
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+app.get("/api/transits", (req, res) => {
+  try {
+    const transitPositions = extractTransitPositions();
+
+    res.json({
+      success: true,
+      transitPositions
+    });
   } catch (error) {
     res.status(500).json({
       success: false,

@@ -18,8 +18,11 @@ async function loadNatalChart(session) {
   });
 
   const result = await response.json();
+  
+  const transitResponse = await fetch("/api/transits");
+  const transitResult = await transitResponse.json();
 
-  console.log("Natal positions:", result.natalPositions);
+  console.log("Transit positions:", transitResult.transitPositions);
 }
 
 async function updateAuthUI() {
