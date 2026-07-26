@@ -10,6 +10,18 @@ const userSection = document.getElementById("userSection");
 const userEmail = document.getElementById("userEmail");
 const signOutButton = document.getElementById("signOutButton");
 
+async function loadNatalChart(session) {
+  const response = await fetch("/api/natal-chart", {
+    headers: {
+      Authorization: `Bearer ${session.access_token}`
+    }
+  });
+
+  const result = await response.json();
+
+  console.log("Natal positions:", result.natalPositions);
+}
+
 async function updateAuthUI() {
   const { data } = await supabaseClient.auth.getSession();
   const session = data.session;
@@ -19,16 +31,8 @@ if (session?.user) {
   userSection.hidden = false;
   form.hidden = false;
   userEmail.textContent = `Signed in as ${session.user.email}`;
-
-  const response = await fetch("/api/natal-chart", {
-  headers: {
-    Authorization: `Bearer ${session.access_token}`
-  }
-});
-
-const result = await response.json();
-
-console.log(result);
+  loadNatalChart(session);
+  
   
 } else {
   authSection.hidden = false;
@@ -173,7 +177,7 @@ const response = await fetch("/api/birth-chart", {
 });
 
     const data = await response.json();
-
+    await loadNatalChart(session);
     
   } catch (error) {
     console.error(error);
