@@ -45,8 +45,10 @@ if (session?.user) {
 } 
 }
 
-supabaseClient.auth.onAuthStateChange(() => {
-  updateAuthUI();
+supabaseClient.auth.onAuthStateChange((event) => {
+  if (event === "INITIAL_SESSION") {
+    updateAuthUI();
+  }
 });
 
 signOutButton.addEventListener("click", async () => {
