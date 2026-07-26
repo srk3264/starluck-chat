@@ -1,7 +1,7 @@
 const { Origin, Horoscope } = require("circular-natal-horoscope-js");
 require("dotenv").config();
 const { createClient } = require("@supabase/supabase-js");
-
+const { extractNatalPositions } = require("./lib/natalPositions");
 
 
 const express = require("express");
@@ -161,10 +161,12 @@ app.get("/api/natal-chart", async (req, res) => {
       });
     }
 
-    res.json({
-      success: true,
-      natalChart: data.natal_chart
-    });
+    const natalPositions = extractNatalPositions(data.natal_chart);
+
+res.json({
+  success: true,
+  natalPositions
+});
 
   } catch (error) {
     res.status(500).json({
