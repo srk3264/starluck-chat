@@ -4,7 +4,6 @@ const { createClient } = require("@supabase/supabase-js");
 const { extractNatalPositions } = require("./lib/natalPositions");
 const { extractTransitPositions } = require("./lib/transitPositions");
 const { detectAspects } = require("./lib/aspects");
-const { extractTransitPositions } = require("./lib/transitPositions");
 
 const express = require("express");
 const path = require("path");
