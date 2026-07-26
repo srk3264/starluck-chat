@@ -119,8 +119,68 @@ res.json({
     });
   }
 });
+
+app.get("/api/natal-chart", async (req, res) => {
+  try {
+    const supabase = createClient(
+      process.env.SUPABASE_URL,
+      process.env.SUPABASE_ANON_KEY,
+      {
+        global: {
+          headers: {
+            Authorization: req.headers.authorization
+          }
+        }
+      }
+    );
+
+    const token = req.headers.authorization?.replace("Bearer ", "");
+
+    const {
+      data: { user },
+      error: authError
+    } = await supabase.auth.getUser(token);
+
+    if (authError || !user) {
+      return res.status(401).json({
+        success: false,
+        error: "Unauthorized"
+      });
+    }
+
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("natal_chart")
+      .eq("id", user.id)
+      .single();
+
+    if (error) {
+      return res.status(400).json({
+        success: false,
+        error: error.message
+      });
+    }
+
+    res.json({
+      success: true,
+      natalChart: data.natal_chart
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
 app.post("/api/auth/magic-link", async (req, res) => {
   try {
+    const supabase = createClient(
+      process.env.SUPABASE_URL,
+      process.env.SUPABASE_ANON_KEY
+    );
+
     const { email } = req.body;
 
     const { error } = await supabase.auth.signInWithOtp({
