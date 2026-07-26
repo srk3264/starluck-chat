@@ -3,7 +3,8 @@ require("dotenv").config();
 const { createClient } = require("@supabase/supabase-js");
 const { extractNatalPositions } = require("./lib/natalPositions");
 const { extractTransitPositions } = require("./lib/transitPositions");
-
+const { detectAspects } = require("./lib/aspects");
+const { extractTransitPositions } = require("./lib/transitPositions");
 
 const express = require("express");
 const path = require("path");
@@ -185,6 +186,63 @@ app.get("/api/transits", (req, res) => {
       success: true,
       transitPositions
     });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+app.get("/api/aspects", async (req, res) => {
+  try {
+    const supabase = createClient(
+      process.env.SUPABASE_URL,
+      process.env.SUPABASE_ANON_KEY,
+      {
+        global: {
+          headers: {
+            Authorization: req.headers.authorization
+          }
+        }
+      }
+    );
+
+    const token = req.headers.authorization?.replace("Bearer ", "");
+
+    const {
+      data: { user },
+      error: authError
+    } = await supabase.auth.getUser(token);
+
+    if (authError || !user) {
+      return res.status(401).json({
+        success: false,
+        error: "Unauthorized"
+      });
+    }
+
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("natal_chart")
+      .eq("id", user.id)
+      .single();
+
+    if (error) throw error;
+
+    const natalPositions = extractNatalPositions(data.natal_chart);
+    const transitPositions = extractTransitPositions();
+
+    const aspects = detectAspects(
+      natalPositions,
+      transitPositions
+    );
+
+    res.json({
+      success: true,
+      aspects
+    });
+
   } catch (error) {
     res.status(500).json({
       success: false,
