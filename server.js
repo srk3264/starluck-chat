@@ -163,6 +163,7 @@ app.get("/api/natal-chart", async (req, res) => {
     }
 
     const natalPositions = extractNatalPositions(data.natal_chart);
+    console.log(natalPositions.planets);
 
 res.json({
   success: true,
