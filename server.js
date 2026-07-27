@@ -4,6 +4,7 @@ const { createClient } = require("@supabase/supabase-js");
 const { extractNatalPositions } = require("./lib/natalPositions");
 const { extractTransitPositions } = require("./lib/transitPositions");
 const { detectAspects } = require("./lib/aspects");
+const { generateInterpretation } = require("./lib/interpretations");
 
 const express = require("express");
 const path = require("path");
@@ -238,10 +239,15 @@ app.get("/api/aspects", async (req, res) => {
   transitPositions
 );
 
-    res.json({
-      success: true,
-      aspects
-    });
+    const interpretedAspects = aspects.map(aspect => ({
+  ...aspect,
+  interpretation: generateInterpretation(aspect)
+}));
+
+res.json({
+  success: true,
+  aspects: interpretedAspects
+});
 
   } catch (error) {
     res.status(500).json({
