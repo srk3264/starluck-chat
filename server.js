@@ -233,10 +233,10 @@ app.get("/api/aspects", async (req, res) => {
     const natalPositions = extractNatalPositions(data.natal_chart);
     const transitPositions = extractTransitPositions();
 
-    const aspects = detectAspects(
-      natalPositions,
-      transitPositions
-    );
+    return res.json({
+  natalPositions,
+  transitPositions
+});
 
     res.json({
       success: true,
