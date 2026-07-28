@@ -239,10 +239,12 @@ app.get("/api/aspects", async (req, res) => {
   transitPositions
 );
 
-    const interpretedAspects = aspects.map(aspect => ({
-  ...aspect,
-  interpretation: generateInterpretation(aspect)
-}));
+    const interpretedAspects = aspects.map(aspect => {
+  return {
+    ...aspect,
+    interpretation: generateInterpretation(aspect)
+  };
+});
 
 res.json({
   success: true,
