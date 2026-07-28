@@ -5,6 +5,7 @@ const { extractNatalPositions } = require("./lib/natalPositions");
 const { extractTransitPositions } = require("./lib/transitPositions");
 const { detectAspects } = require("./lib/aspects");
 const { generateInterpretation } = require("./lib/interpretations");
+const { aggregateThemes } = require("./lib/themeAggregator");
 
 const express = require("express");
 const path = require("path");
@@ -239,16 +240,17 @@ app.get("/api/aspects", async (req, res) => {
   transitPositions
 );
 
-    const interpretedAspects = aspects.map(aspect => {
-  return {
-    ...aspect,
-    interpretation: generateInterpretation(aspect)
-  };
-});
+   const interpretedAspects = aspects.map(aspect => ({
+  ...aspect,
+  interpretation: generateInterpretation(aspect)
+}));
+
+const dominantThemes = aggregateThemes(interpretedAspects);
 
 res.json({
   success: true,
-  aspects: interpretedAspects
+  aspects: interpretedAspects,
+  dominantThemes
 });
 
   } catch (error) {
