@@ -6,6 +6,7 @@ const { extractTransitPositions } = require("./lib/transitPositions");
 const { detectAspects } = require("./lib/aspects");
 const { generateInterpretation } = require("./lib/interpretations");
 const { aggregateThemes } = require("./lib/themeAggregator");
+const { generateHoroscope } = require("./lib/horoscopeGenerator");
 
 const express = require("express");
 const path = require("path");
@@ -247,7 +248,14 @@ app.get("/api/aspects", async (req, res) => {
 
 const dominantThemes = aggregateThemes(interpretedAspects);
 
+const horoscope = generateHoroscope(
+  dominantThemes,
+  interpretedAspects
+);
+
 res.json({
+  success: true,
+  horoscope,
   success: true,
   aspects: interpretedAspects,
   dominantThemes
