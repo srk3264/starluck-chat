@@ -199,3 +199,19 @@ const response = await fetch("/api/birth-chart", {
     console.error(error);
   }
 });
+
+document.addEventListener("visibilitychange", async () => {
+  if (document.visibilityState !== "visible") {
+    return;
+  }
+
+  const {
+    data: { session }
+  } = await supabaseClient.auth.getSession();
+
+  if (!session) {
+    return;
+  }
+
+  await loadNatalChart(session);
+});
