@@ -193,7 +193,7 @@ const response = await fetch("/api/birth-chart", {
 });
 
     const data = await response.json();
-    
+    await loadNatalChart(session);
     
   } catch (error) {
     console.error(error);
