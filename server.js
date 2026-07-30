@@ -248,6 +248,13 @@ app.get("/api/aspects", async (req, res) => {
 
 const dominantThemes = aggregateThemes(interpretedAspects);
 
+console.log(interpretedAspects.slice(0, 3));
+
+const horoscope = generateHoroscope(
+  dominantThemes,
+  interpretedAspects
+);
+
 const horoscope = generateHoroscope(
   dominantThemes,
   interpretedAspects
