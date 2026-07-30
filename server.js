@@ -258,9 +258,9 @@ const horoscope = generateHoroscope(
 res.json({
   success: true,
   horoscope,
+  success: true,
   aspects: interpretedAspects,
-  dominantThemes,
-  debugStrongest: interpretedAspects[0]
+  dominantThemes
 });
 
   } catch (error) {
