@@ -255,11 +255,6 @@ const horoscope = generateHoroscope(
   interpretedAspects
 );
 
-const horoscope = generateHoroscope(
-  dominantThemes,
-  interpretedAspects
-);
-
 res.json({
   success: true,
   horoscope,
