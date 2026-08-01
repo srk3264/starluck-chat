@@ -33,7 +33,10 @@ async function loadNatalChart(session) {
   console.log("Transits:", transitResult);
   console.log("Aspects:", aspectsResult);
 
-  
+  console.log(
+  "Houses:",
+  natal.natalPositions.houses
+);
 }
 
 async function updateAuthUI() {
