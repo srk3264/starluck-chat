@@ -19,7 +19,12 @@ async function loadNatalChart(session) {
 
   const result = await response.json();
 
-  const transitResponse = await fetch("/api/transits");
+console.log(
+  "Houses:",
+  result.natalPositions.houses
+);
+
+const transitResponse = await fetch("/api/transits");
   const transitResult = await transitResponse.json();
   const aspectsResponse = await fetch("/api/aspects", {
     headers: {
@@ -33,10 +38,7 @@ async function loadNatalChart(session) {
   console.log("Transits:", transitResult);
   console.log("Aspects:", aspectsResult);
 
-  console.log(
-  "Houses:",
-  natal.natalPositions.houses
-);
+  
 }
 
 async function updateAuthUI() {
